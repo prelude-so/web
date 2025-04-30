@@ -1,0 +1,39 @@
+{
+  "name": "@prelude.so/core",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "build:slim": "webpack --config webpack.prod.cjs --env slim",
+    "build:slim:debug": "webpack --config webpack.dev.cjs --env slim",
+    "build:default": "webpack --config webpack.prod.cjs",
+    "build:default:debug": "webpack --config webpack.dev.cjs",
+    "build": "rimraf ./dist && npm run build:slim && npm run build:default",
+    "build:debug": "rimraf ./dist && npm run build:slim:debug && npm run build:default:debug"
+  },
+  "keywords": [],
+  "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
+  "homepage": "https://github.com/prelude-so/javascript/tree/main/packages/core#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prelude-so/javascript.git",
+    "directory": "packages/core"
+  },
+  "license": "Apache-2.0",
+  "description": "Prelude Web Core SDK",
+  "main": "./dist/main/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "default": "./dist/default/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./slim": {
+      "default": "./dist/slim/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./slim/index_bg.wasm": "./dist/slim/index_bg.wasm"
+  }
+}

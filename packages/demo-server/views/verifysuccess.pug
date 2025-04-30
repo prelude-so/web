@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    section(class="bg-gray-50 dark:bg-gray-900")
+      div(class="flex flex-col items-center justify-center px-8 py-8 mx-auto md:h-screen lg:py-0")
+        div(class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700")
+          div(class="p-6 space-y-8 md:space-y-10 sm:p-8")
+            h1(class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white")= title 
+            
+            div(class="p-6 flex flex-col items-center justify-center text-center")
+              div(class="p-4 mb-8 text-lg text-green-700 rounded-lg")
+                svg(class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
+                  path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7")
+              
+              h2(class="mt-8 mb-6 text-xl font-semibold text-gray-900 dark:text-white") Verification Successful!
+              p(class="mt-6 mb-6 text-gray-900 dark:text-white") Your phone number has been successfully verified.
+              
+              if phoneNumber
+                div(class="my-8 p-6")
+                  span(class="font-medium text-gray-900 dark:text-white")= phoneNumber
+              
+              div(class="mt-10")
+                a(href="/" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded") Return to Home

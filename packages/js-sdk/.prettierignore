@@ -1,0 +1,6 @@
+CHANGELOG.md
+node_modules
+pkg
+
+# don't format build output, will break source maps
+dist

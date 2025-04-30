@@ -1,0 +1,61 @@
+{
+  "name": "@prelude.so/react-sdk",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "prebuild": "node ./scripts/check-version.cjs",
+    "build:slim": "webpack --config webpack.prod.cjs --env slim",
+    "build:slim:debug": "webpack --config webpack.dev.cjs --env slim",
+    "build:default": "webpack --config webpack.prod.cjs",
+    "build:default:debug": "webpack --config webpack.dev.cjs",
+    "build": "rimraf ./dist && npm run build:slim && npm run build:default",
+    "build:debug": "rimraf ./dist && npm run build:slim:debug && npm run build:default:debug",
+    "format": "prettier ./src --write",
+    "lint": "eslint"
+  },
+  "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
+  "homepage": "https://github.com/prelude-so/javascript/tree/main/packages/react-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prelude-so/javascript.git",
+    "directory": "packages/react-sdk"
+  },
+  "license": "Apache-2.0",
+  "description": "Prelude React SDK",
+  "main": "./dist/react-sdk.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/default/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./slim": {
+      "default": "./dist/slim/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@prelude.so/js-sdk": "*"
+  },
+  "peerDependencies": {
+    "react": "^16.11.0 || ^17 || ^18 || ^19",
+    "react-dom": "^16.11.0 || ^17 || ^18 || ^19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "eslint": "^9.24.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "webpack": "^5.99.5",
+    "webpack-cli": "^6.0.1",
+    "webpack-merge": "^6.0.1"
+  }
+}

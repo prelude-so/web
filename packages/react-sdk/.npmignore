@@ -1,0 +1,10 @@
+node_modules
+scripts
+src
+.gitignore
+.npmignore
+.prettierignore
+.prettierrc.json
+eslint.config.mjs
+tsconfig.json
+webpack.*.cjs
