@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/react-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
@@ -14,10 +14,10 @@
     "lint": "eslint"
   },
   "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
-  "homepage": "https://github.com/prelude-so/javascript/tree/main/packages/react-sdk#readme",
+  "homepage": "https://github.com/prelude-so/web/tree/main/packages/react-sdk#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prelude-so/javascript.git",
+    "url": "git+https://github.com/prelude-so/web.git",
     "directory": "packages/react-sdk"
   },
   "license": "Apache-2.0",
@@ -38,7 +38,7 @@
     "dist"
   ],
   "dependencies": {
-    "@prelude.so/js-sdk": "^0.1.1"
+    "@prelude.so/js-sdk": "^0.1.2"
   },
   "peerDependencies": {
     "react": "^16.11.0 || ^17 || ^18 || ^19",
