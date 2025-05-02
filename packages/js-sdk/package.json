@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/js-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
@@ -15,10 +15,10 @@
   },
   "keywords": [],
   "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
-  "homepage": "https://github.com/prelude-so/javascript/tree/main/packages/js-sdk#readme",
+  "homepage": "https://github.com/prelude-so/web/tree/main/packages/js-sdk#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prelude-so/javascript.git",
+    "url": "git+https://github.com/prelude-so/web.git",
     "directory": "packages/js-sdk"
   },
   "license": "Apache-2.0",
@@ -75,7 +75,7 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "@prelude.so/core": "^0.1.0",
+    "@prelude.so/core": "^0.1.1",
     "browser-tabs-lock": "^1.3.0"
   },
   "engines": {
