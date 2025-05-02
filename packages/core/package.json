@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "scripts": {
     "build:slim": "webpack --config webpack.prod.cjs --env slim",
@@ -12,10 +12,10 @@
   },
   "keywords": [],
   "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
-  "homepage": "https://github.com/prelude-so/javascript/tree/main/packages/core#readme",
+  "homepage": "https://github.com/prelude-so/web/tree/main/packages/core#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prelude-so/javascript.git",
+    "url": "git+https://github.com/prelude-so/web.git",
     "directory": "packages/core"
   },
   "license": "Apache-2.0",
