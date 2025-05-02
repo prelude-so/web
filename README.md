@@ -3,7 +3,7 @@
 This directory is the NPM workspace hosting Prelude's code intended for use in the browser.
 All workspaces are located in the `packages/` directory.
 
-## @prelude.so/prelude-core
+## @prelude.so/core
 
 This package contains proprietary core features compiled into Wasm.
 
