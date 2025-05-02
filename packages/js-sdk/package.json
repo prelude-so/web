@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/js-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
@@ -75,7 +75,7 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "@prelude.so/core": "*",
+    "@prelude.so/core": "^0.1.0",
     "browser-tabs-lock": "^1.3.0"
   },
   "engines": {
