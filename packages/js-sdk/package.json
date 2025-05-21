@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/js-sdk",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",

@@ -100,26 +100,6 @@ export class PrldSessionClient {
     return data;
   }
 
-  public async getUser(): Promise<PrldUser> {
-    const entry = await this.cacheManager.get(
-      new CacheKey({
-        appId: this.appId,
-      }),
-    );
-
-    if (entry?.access_token) {
-      const decodedToken = decode(entry.access_token);
-
-      return {
-        accessToken: entry.access_token,
-        profile: decodedToken.claims.cc,
-      };
-    }
-
-    const { user } = await this.refresh();
-    return user;
-  }
-
   public async refresh(): Promise<{ user: PrldUser }> {
     let refreshError: null | Error = null;
 

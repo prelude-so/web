@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "homepage": "https://github.com/prelude-so/javascript/tree/main/packages/demo-server",
+  "homepage": "https://github.com/prelude-so/web/tree/main/packages/demo-server",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prelude-so/javascript.git",
+    "url": "git+https://github.com/prelude-so/web.git",
     "directory": "packages/demo-server"
   },
   "scripts": {

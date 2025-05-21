@@ -1,9 +1,4 @@
-import {
-  PrldIdentifier,
-  PrldSessionClient,
-  PrldSessionClientOptions,
-  UnauthorizedError,
-} from "@prelude.so/js-sdk";
+import { PrldIdentifier, PrldSessionClient, PrldSessionClientOptions, PrldUser } from "@prelude.so/js-sdk";
 import { ReactNode, useCallback, useEffect, useReducer, useRef, useState } from "react";
 
 import { PrldSessionContext } from "./context";
@@ -27,33 +22,23 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
     }
     didInitialise.current = true;
 
-    const refresh = async () => {
+    const initialRefresh = async () => {
       try {
-        const user = await client.getUser();
+        const { user } = await client.refresh();
         dispatch({ type: "INITIALISED", user });
       } catch (error) {
-        if (error instanceof UnauthorizedError) {
-          dispatch({ type: "ERROR", error });
-          return;
+        let e: Error;
+        if (error instanceof Error) {
+          e = error;
+        } else {
+          e = new Error("Check OTP error");
         }
-        throw error;
+        dispatch({ type: "ERROR", error: e });
+        throw e;
       }
     };
 
-    refresh();
-  }, [client]);
-
-  const getUser = useCallback(async () => {
-    try {
-      const user = await client.getUser();
-      dispatch({ type: "GET_USER_COMPLETE", user });
-    } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        dispatch({ type: "ERROR", error });
-        return;
-      }
-      throw error;
-    }
+    initialRefresh();
   }, [client]);
 
   const startOTPLogin = useCallback(
@@ -62,11 +47,14 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
         dispatch({ type: "START_OTP_LOGIN" });
         await client.startOTPLogin({ identifier });
       } catch (error) {
-        if (error instanceof UnauthorizedError) {
-          dispatch({ type: "ERROR", error });
-          return;
+        let e: Error;
+        if (error instanceof Error) {
+          e = error;
+        } else {
+          e = new Error("Start OTP Login error");
         }
-        throw error;
+        dispatch({ type: "ERROR", error: e });
+        throw e;
       }
     },
     [client],
@@ -78,11 +66,14 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
         await client.checkOTP(code);
         dispatch({ type: "OTP_CHECK_COMPLETE" });
       } catch (error) {
-        if (error instanceof UnauthorizedError) {
-          dispatch({ type: "ERROR", error });
-          return;
+        let e: Error;
+        if (error instanceof Error) {
+          e = error;
+        } else {
+          e = new Error("Check OTP error");
         }
-        throw error;
+        dispatch({ type: "ERROR", error: e });
+        throw e;
       }
     },
     [client],
@@ -93,24 +84,31 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
       dispatch({ type: "RETRY_OTP" });
       await client.retryOTP();
     } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        dispatch({ type: "ERROR", error });
-        return;
+      let e: Error;
+      if (error instanceof Error) {
+        e = error;
+      } else {
+        e = new Error("Retry OTP error");
       }
-      throw error;
+      dispatch({ type: "ERROR", error: e });
+      throw e;
     }
   }, [client]);
 
-  const refresh = useCallback(async () => {
+  const refresh: () => Promise<PrldUser | undefined> = useCallback(async () => {
     try {
       const { user } = await client.refresh();
       dispatch({ type: "REFRESH_COMPLETE", user });
+      return user;
     } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        dispatch({ type: "ERROR", error });
-        return;
+      let e: Error;
+      if (error instanceof Error) {
+        e = error;
+      } else {
+        e = new Error("Refresh error");
       }
-      throw error;
+      dispatch({ type: "ERROR", error: e });
+      throw e;
     }
   }, [client]);
 
@@ -119,11 +117,14 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
       await client.logout();
       dispatch({ type: "LOGOUT_COMPLETE" });
     } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        dispatch({ type: "ERROR", error });
-        return;
+      let e: Error;
+      if (error instanceof Error) {
+        e = error;
+      } else {
+        e = new Error("Logout error");
       }
-      throw error;
+      dispatch({ type: "ERROR", error: e });
+      throw e;
     }
   }, [client]);
 
@@ -135,7 +136,6 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
         checkOTP,
         retryOTP,
         refresh,
-        getUser,
         logout,
       }}
     >

@@ -1,4 +1,4 @@
-import { PrldIdentifier } from "@prelude.so/js-sdk";
+import { PrldIdentifier, PrldUser } from "@prelude.so/js-sdk";
 import { createContext } from "react";
 import { initialSessionState, PrldSessionState } from "./state";
 
@@ -10,8 +10,7 @@ export interface PrldSessionContextValue extends PrldSessionState {
   startOTPLogin: (identifier: PrldIdentifier) => Promise<void>;
   checkOTP: (code: string) => Promise<void>;
   retryOTP: () => Promise<void>;
-  refresh: () => Promise<void>;
-  getUser: () => Promise<void>;
+  refresh: () => Promise<PrldUser | undefined>;
   logout: () => Promise<void>;
 }
 
@@ -21,6 +20,5 @@ export const PrldSessionContext = createContext<PrldSessionContextValue>({
   checkOTP: stub,
   retryOTP: stub,
   refresh: stub,
-  getUser: stub,
   logout: stub,
 });
