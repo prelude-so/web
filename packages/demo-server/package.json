@@ -12,7 +12,7 @@
   "scripts": {
     "dev-server": "tsc-watch --noClear -p ./tsconfig.json --onFirstSuccess \"npm run copy-files\" --onSuccess \"node ./dist/app.js\"",
     "copy-files": "rm -rf ./dist/views && cp -R ./views ./dist/views && rm -rf ./dist/public && cp -R ./public ./dist/public && npm run copy-client-sdk",
-    "copy-client-sdk": "rm -f dist/public/*.* && cp ../js-sdk/dist/default/signals/index.js ./dist/public/prelude-signals.js",
+    "copy-client-sdk": "rm -f dist/public/*.* && cp ../core/dist/index.js ./dist/public/prelude-core.js && cp ../js-sdk/dist/umd/signals/index.js ./dist/public/prelude-signals.js",
     "tailwind": "npx @tailwindcss/cli -i ./src/input.css -o ./public/stylesheets/style.css"
   },
   "dependencies": {

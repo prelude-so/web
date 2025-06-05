@@ -5,7 +5,7 @@ import initWasm, {
   get_version,
 } from "@prelude.so/core/slim";
 // @ts-ignore
-import wasm from "@prelude.so/core/slim/index_bg.wasm";
+import wasm from "@prelude.so/core/index_bg.wasm";
 import Signals from "./signals/signals";
 
 export const generatePayload = async (signals: Signals) => {

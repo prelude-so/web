@@ -4,4 +4,4 @@ export { dispatchSignals } from "./signals/dispatch";
 
 export { PrldSessionClient, PrldSessionClientOptions } from "./session/client";
 
-export { PrldIdentifier, PrldUser } from "./session/global";
+export { PrldIdentifier, PrldUser, PrldProfile } from "./session/global";

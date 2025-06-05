@@ -1,15 +1,11 @@
 {
   "name": "@prelude.so/react-sdk",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
-    "build:slim": "webpack --config webpack.prod.cjs --env slim",
-    "build:slim:debug": "webpack --config webpack.dev.cjs --env slim",
-    "build:default": "webpack --config webpack.prod.cjs",
-    "build:default:debug": "webpack --config webpack.dev.cjs",
-    "build": "rimraf ./dist && npm run build:slim && npm run build:default",
-    "build:debug": "rimraf ./dist && npm run build:slim:debug && npm run build:default:debug",
+    "build": "rimraf ./dist && webpack --config webpack.prod.cjs",
+    "build:debug": "rimraf ./dist && webpack --config webpack.dev.cjs",
     "format": "prettier ./src --write",
     "lint": "eslint"
   },
@@ -26,11 +22,11 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/default/index.js",
+      "default": "./dist/index.js",
       "types": "./dist/types/index.d.ts"
     },
     "./slim": {
-      "default": "./dist/slim/index.js",
+      "default": "./dist/index.slim.js",
       "types": "./dist/types/index.d.ts"
     }
   },
@@ -38,7 +34,7 @@
     "dist"
   ],
   "dependencies": {
-    "@prelude.so/js-sdk": "^0.1.3"
+    "@prelude.so/js-sdk": "^0.1.4"
   },
   "peerDependencies": {
     "react": "^16.11.0 || ^17 || ^18 || ^19",

@@ -1,14 +1,10 @@
 {
   "name": "@prelude.so/core",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "private": false,
   "scripts": {
-    "build:slim": "webpack --config webpack.prod.cjs --env slim",
-    "build:slim:debug": "webpack --config webpack.dev.cjs --env slim",
-    "build:default": "webpack --config webpack.prod.cjs",
-    "build:default:debug": "webpack --config webpack.dev.cjs",
-    "build": "rimraf ./dist && npm run build:slim && npm run build:default",
-    "build:debug": "rimraf ./dist && npm run build:slim:debug && npm run build:default:debug"
+    "build": "rimraf ./dist && webpack --config webpack.prod.cjs",
+    "build:debug": "rimraf ./dist && webpack --config webpack.dev.cjs"
   },
   "keywords": [],
   "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
@@ -27,13 +23,18 @@
   ],
   "exports": {
     ".": {
-      "default": "./dist/default/index.js",
+      "default": "./dist/index.js",
       "types": "./dist/types/index.d.ts"
     },
     "./slim": {
-      "default": "./dist/slim/index.js",
+      "default": "./dist/index.slim.js",
       "types": "./dist/types/index.d.ts"
     },
-    "./slim/index_bg.wasm": "./dist/slim/index_bg.wasm"
+    "./slim/index_bg.wasm": "./dist/index_bg.wasm"
+  },
+  "devDependencies": {
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-merge": "^6.0.1"
   }
 }

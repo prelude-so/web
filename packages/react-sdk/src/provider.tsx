@@ -1,4 +1,10 @@
-import { PrldIdentifier, PrldSessionClient, PrldSessionClientOptions, PrldUser } from "@prelude.so/js-sdk";
+import {
+  PrldIdentifier,
+  PrldSessionClient,
+  PrldSessionClientOptions,
+  PrldUser,
+  UnauthorizedError,
+} from "@prelude.so/js-sdk";
 import { ReactNode, useCallback, useEffect, useReducer, useRef, useState } from "react";
 
 import { PrldSessionContext } from "./context";
@@ -24,17 +30,13 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
 
     const initialRefresh = async () => {
       try {
-        const { user } = await client.refresh();
-        dispatch({ type: "INITIALISED", user });
+        await client.refresh();
       } catch (error) {
-        let e: Error;
-        if (error instanceof Error) {
-          e = error;
-        } else {
-          e = new Error("Check OTP error");
+        // Do not throw on initial refresh when user is not logged in
+        if (error instanceof UnauthorizedError) {
+          return;
         }
-        dispatch({ type: "ERROR", error: e });
-        throw e;
+        throw error;
       }
     };
 

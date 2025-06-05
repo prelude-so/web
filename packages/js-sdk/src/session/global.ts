@@ -10,7 +10,9 @@ export interface PrldUser {
   profile: PrldProfile;
 }
 
-export type StartOTPLoginEndpointOptions = object;
+export interface StartOTPLoginEndpointOptions {
+  identifier: PrldIdentifier;
+}
 
 export interface ErrorResponse {
   ok: false;

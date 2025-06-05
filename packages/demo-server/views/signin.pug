@@ -4,23 +4,36 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     != scripts
+    script(src='/prelude-core.js')
     script(src='/prelude-signals.js')
     script(type='text/javascript', defer='defer').
       window.onload = function() {
         (async () => {
           try {
             const sdkKey = '#{sdkKey}';
-            const prelude = await this.prelude;
+            const prelude = this.prelude;
             const dispatchId = await prelude.dispatchSignals(sdkKey);
+
+            console.log("Dispatch ID: " + dispatchId);
             document.getElementById("dispatchId").value = dispatchId;
             document.getElementById("js-sdk").style.display = "block";
           } catch (error) {
-            // TODO We should render some error message here
             console.error("Error: "+ error);
+            document.getElementById("js-sdk").style.display = "none";
+            document.getElementById("error-container").style.display = "block";
+            document.getElementById("error-message").textContent = error.message || "Failed to initialize authentication.";
           }
         })();
       }
   body
+    #error-container(style='display: none;')
+      section(class="bg-gray-50 dark:bg-gray-900")
+        div(class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0")
+          div(class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 border-red-500 border-2")
+            div(class="p-6 space-y-4 md:space-y-6 sm:p-8")
+              h1(class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl") Error
+              div(class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 dark:bg-red-900 dark:text-red-200")
+                p#error-message(class="text-sm") 
     #js-sdk(style='display: none;')
       section(class="bg-gray-50 dark:bg-gray-900")
         div(class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0")

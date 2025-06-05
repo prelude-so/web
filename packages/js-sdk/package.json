@@ -1,15 +1,11 @@
 {
   "name": "@prelude.so/js-sdk",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
-    "build:slim": "webpack --config webpack.prod.cjs --env slim",
-    "build:slim:debug": "webpack --config webpack.dev.cjs --env slim",
-    "build:default": "webpack --config webpack.prod.cjs",
-    "build:default:debug": "webpack --config webpack.dev.cjs",
-    "build": "rimraf ./dist && npm run build:slim && npm run build:default",
-    "build:debug": "rimraf ./dist && npm run build:slim:debug && npm run build:default:debug",
+    "build": "rimraf ./dist && webpack --config webpack.prod.cjs",
+    "build:debug": "rimraf ./dist && webpack --config webpack.dev.cjs",
     "format": "prettier ./src --write",
     "lint": "eslint"
   },
@@ -27,27 +23,27 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/default/main/index.js",
+      "default": "./dist/main/index.js",
       "types": "./dist/types/index.d.ts"
     },
     "./slim": {
-      "default": "./dist/slim/main/index.js",
+      "default": "./dist/main/index.slim.js",
       "types": "./dist/types/index.d.ts"
     },
     "./signals": {
-      "default": "./dist/default/signals/index.js",
+      "default": "./dist/signals/index.js",
       "types": "./dist/types/signals/index.d.ts"
     },
     "./signals/slim": {
-      "default": "./dist/slim/signals/index.js",
+      "default": "./dist/signals/index.slim.js",
       "types": "./dist/types/signals/index.d.ts"
     },
     "./session": {
-      "default": "./dist/default/session/index.js",
+      "default": "./dist/session/index.js",
       "types": "./dist/types/session/index.d.ts"
     },
     "./session/slim": {
-      "default": "./dist/slim/session/index.js",
+      "default": "./dist/session/index.slim.js",
       "types": "./dist/types/session/index.d.ts"
     }
   },
@@ -75,7 +71,7 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "@prelude.so/core": "^0.1.1",
+    "@prelude.so/core": "^0.1.3",
     "browser-tabs-lock": "^1.3.0"
   },
   "engines": {

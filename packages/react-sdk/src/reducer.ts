@@ -5,7 +5,6 @@ type Action =
   | { type: "START_OTP_LOGIN" }
   | { type: "OTP_CHECK_COMPLETE" }
   | { type: "RETRY_OTP" }
-  | { type: "INITIALISED"; user: PrldUser }
   | { type: "REFRESH_COMPLETE"; user: PrldUser }
   | { type: "LOGOUT_COMPLETE" }
   | { type: "ERROR"; error: Error };
@@ -24,7 +23,6 @@ export const reducer = (state: PrldSessionState, action: Action): PrldSessionSta
         isLoading: false,
         error: undefined,
       };
-    case "INITIALISED":
     case "REFRESH_COMPLETE":
       return {
         ...state,

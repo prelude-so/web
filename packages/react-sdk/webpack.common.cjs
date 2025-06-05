@@ -1,13 +1,14 @@
+const { merge } = require("webpack-merge");
 const path = require("path");
 
-module.exports = (env) => {
+const baseConfig = (slim) => {
   return {
     entry: "./src/index.ts",
     externals: {
       react: "react",
       "react/jsx-runtime": "react/jsx-runtime",
       "react-dom": "react-dom",
-      "@prelude.so/js-sdk": env.slim ? "@prelude.so/js-sdk/slim" : "@prelude.so/js-sdk",
+      "@prelude.so/js-sdk": slim ? "@prelude.so/js-sdk/slim" : "@prelude.so/js-sdk",
     },
     module: {
       rules: [
@@ -19,20 +20,25 @@ module.exports = (env) => {
       ],
     },
     output: {
-      filename: "index.js",
-      path: path.resolve(__dirname, "dist", env.slim ? "slim" : "default"),
-      clean: true,
+      path: path.resolve(__dirname, "dist"),
+      filename: slim ? "index.slim.js" : "index.js",
       globalObject: "this",
       library: {
-        name: "prelude-react",
+        name: "preludeReact",
         type: "umd",
       },
     },
     resolve: {
-      alias: {
-        "@prelude.so/js-sdk": env.slim ? "@prelude.so/js-sdk/slim" : "@prelude.so/js-sdk",
-      },
       extensions: [".tsx", ".ts", ".js"],
     },
   };
 };
+
+module.exports = [
+  merge(baseConfig(false), {
+    name: "default",
+  }),
+  merge(baseConfig(true), {
+    name: "slim",
+  }),
+];

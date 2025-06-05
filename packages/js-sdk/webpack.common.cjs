@@ -1,17 +1,18 @@
+const { merge } = require("webpack-merge");
 const path = require("path");
 
-module.exports = (env) => {
+const baseConfig = (slim) => {
   return {
-    externals: {
-      "browser-tabs-lock": "browser-tabs-lock",
-      "@prelude.so/core": "@prelude.so/core",
-      "@prelude.so/core/slim": "@prelude.so/core/slim",
-      "@prelude.so/core/slim/index_bg.wasm": "@prelude.so/core/slim/index_bg.wasm",
-    },
     entry: {
       signals: path.resolve(__dirname, "src/signals/index.ts"),
       session: path.resolve(__dirname, "src/session/index.ts"),
       main: path.resolve(__dirname, "src/index.ts"),
+    },
+    externals: {
+      "browser-tabs-lock": "browser-tabs-lock",
+      "@prelude.so/core": "@prelude.so/core",
+      "@prelude.so/core/slim": "@prelude.so/core/slim",
+      "@prelude.so/core/index_bg.wasm": "@prelude.so/core/index_bg.wasm",
     },
     module: {
       rules: [
@@ -20,27 +21,40 @@ module.exports = (env) => {
           use: "ts-loader",
           exclude: /node_modules/,
         },
-        {
-          test: /\.wasm$/,
-          type: env.slim ? "asset/resource" : "asset/inline",
-        },
       ],
     },
     output: {
-      filename: "[name]/index.js",
-      path: path.resolve(__dirname, "dist", env.slim ? "slim" : "default"),
-      clean: true,
+      path: path.resolve(__dirname, "dist"),
+      filename: slim ? "[name]/index.slim.js" : "[name]/index.js",
       globalObject: "this",
       library: {
-        name: "prelude-js",
         type: "umd",
+        name: "prelude",
       },
     },
     resolve: {
       alias: {
-        "#core": path.resolve(__dirname, "src", env.slim ? "core.slim.ts" : "core.default.ts"),
+        "#core": path.resolve(__dirname, "src", slim ? "core.slim.ts" : "core.default.ts"),
       },
       extensions: [".tsx", ".ts", ".js"],
     },
   };
 };
+
+module.exports = [
+  merge(baseConfig(false), {
+    name: "default",
+  }),
+  merge(baseConfig(true), {
+    name: "slim",
+  }),
+  merge(baseConfig(false), {
+    name: "umd",
+    externals: {
+      "@prelude.so/core": "preludeCore",
+    },
+    output: {
+      path: path.resolve(__dirname, "dist/umd"),
+    },
+  }),
+];
