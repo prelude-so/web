@@ -1,9 +1,15 @@
-import initWasm, {
+import {
+  initSync,
   generate_payload,
   get_default_endpoint,
   get_dispatch_id,
   get_version,
-} from "../pkg/index";
+} from "./core";
 
-export { generate_payload, get_default_endpoint, get_dispatch_id, get_version };
-export default initWasm;
+export {
+  generate_payload,
+  get_default_endpoint,
+  get_dispatch_id,
+  get_version,
+  initSync,
+};

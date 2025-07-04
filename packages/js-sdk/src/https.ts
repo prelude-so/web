@@ -11,7 +11,7 @@ export interface FetchOptions {
   signal?: AbortSignal;
 }
 
-export const createAbortController = () => new AbortController();
+export const createAbortController: () => AbortController = () => new AbortController();
 
 const dofetch = async (fetchUrl: string, fetchOptions: FetchOptions) => {
   const response = await fetch(fetchUrl, {

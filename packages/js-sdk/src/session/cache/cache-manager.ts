@@ -67,6 +67,38 @@ export class CacheManager {
     await this.keyManifest?.add(cacheKey.toKey());
   }
 
+  async invalidate(cacheKey: CacheKey): Promise<void> {
+    let wrappedEntry = await this.cache.get<WrappedCacheEntry>(cacheKey.toKey());
+
+    let matchedKey = cacheKey.toKey();
+    if (!wrappedEntry) {
+      const keys = await this.getCacheKeys();
+
+      if (!keys) return;
+
+      matchedKey = this.matchExistingCacheKey(cacheKey, keys);
+
+      if (matchedKey) {
+        wrappedEntry = await this.cache.get<WrappedCacheEntry>(matchedKey);
+      }
+    }
+
+    // If we still don't have an entry, exit.
+    if (!wrappedEntry) {
+      return;
+    }
+
+    const now = await this.nowProvider();
+    const nowSeconds = Math.floor(now / 1000);
+
+    wrappedEntry = {
+      body: wrappedEntry.body,
+      expiresAt: nowSeconds - 1,
+    };
+    await this.cache.set(matchedKey, wrappedEntry);
+    await this.keyManifest?.add(matchedKey);
+  }
+
   async clear(appId?: string): Promise<void> {
     const keys = await this.getCacheKeys();
 

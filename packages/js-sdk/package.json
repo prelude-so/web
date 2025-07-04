@@ -1,11 +1,12 @@
 {
   "name": "@prelude.so/js-sdk",
-  "version": "0.1.4",
+  "version": "0.2.7",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
-    "build": "rimraf ./dist && webpack --config webpack.prod.cjs",
-    "build:debug": "rimraf ./dist && webpack --config webpack.dev.cjs",
+    "dev": "rimraf ./dist && node scripts/build.mjs --mode=dev && npm run build:types",
+    "build:types": "tsc --project tsconfig.json",
+    "build": "rimraf ./dist && node scripts/build.mjs --mode=prod && npm run build:types",
     "format": "prettier ./src --write",
     "lint": "eslint"
   },
@@ -19,59 +20,56 @@
   },
   "license": "Apache-2.0",
   "description": "Prelude Web SDK",
-  "main": "./dist/main/index.js",
+  "type": "module",
+  "main": "./dist/inline/index.js",
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/main/index.js",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/inline/index.js"
     },
     "./slim": {
-      "default": "./dist/main/index.slim.js",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/slim/index.js"
     },
     "./signals": {
-      "default": "./dist/signals/index.js",
-      "types": "./dist/types/signals/index.d.ts"
+      "types": "./dist/types/signals/index.d.ts",
+      "default": "./dist/inline/signals.js"
     },
     "./signals/slim": {
-      "default": "./dist/signals/index.slim.js",
-      "types": "./dist/types/signals/index.d.ts"
+      "types": "./dist/types/signals/index.d.ts",
+      "default": "./dist/slim/signals.js"
     },
     "./session": {
-      "default": "./dist/session/index.js",
-      "types": "./dist/types/session/index.d.ts"
+      "types": "./dist/types/session/index.d.ts",
+      "default": "./dist/inline/session.js"
     },
     "./session/slim": {
-      "default": "./dist/session/index.slim.js",
-      "types": "./dist/types/session/index.d.ts"
+      "types": "./dist/types/session/index.d.ts",
+      "default": "./dist/slim/session.js"
     }
   },
   "imports": {
-    "#core": {
-      "node": "./src/core.slim.ts",
-      "default": "./src/core.default.ts"
-    }
+    "#core-worker-utils": [
+      "./src/worker/core-worker-utils",
+      "./src/worker/core-worker-utils.slim"
+    ]
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
     "@eslint/js": "^9.24.0",
-    "@types/node": "^22.13.10",
+    "esbuild": "^0.25.5",
     "eslint": "^9.24.0",
     "eslint-plugin-prettier": "^5.2.6",
     "rimraf": "^6.0.1",
-    "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
-    "user-agent-data-types": "^0.4.2",
-    "webpack": "^5.98.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-merge": "^6.0.1"
+    "user-agent-data-types": "^0.4.2"
   },
   "dependencies": {
-    "@prelude.so/core": "^0.1.3",
+    "@prelude.so/core": "^0.1.6",
     "browser-tabs-lock": "^1.3.0"
   },
   "engines": {

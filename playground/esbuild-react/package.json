@@ -1,0 +1,30 @@
+{
+  "name": "esbuild-react",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx node --env-file .env.local scripts/esbuild.mjs watch",
+    "build": "npx node scripts/esbuild.mjs",
+    "lint": "eslint"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "devDependencies": {
+    "@chialab/esbuild-plugin-worker": "^0.18.1",
+    "@eslint/js": "^9.28.0",
+    "@tsconfig/recommended": "^1.0.8",
+    "@types/react-dom": "^19.1.6",
+    "esbuild": "^0.25.2",
+    "eslint-plugin-prettier": "^5.4.1",
+    "eslint-plugin-react": "^7.37.5",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
+  },
+  "dependencies": {
+    "@prelude.so/js-sdk": "^0.2.7",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

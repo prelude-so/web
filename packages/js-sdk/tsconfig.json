@@ -1,18 +1,17 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "pkg"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
-    "declarationMap": true,
     "declarationDir": "dist/types",
     "downlevelIteration": true,
-    "lib": ["ES2023", "DOM"],
+    "emitDeclarationOnly": true,
+    "lib": ["ES2023", "DOM", "WebWorker"],
     "outDir": "dist",
     "paths": {
-      "#core": ["./src/core.slim.ts"]
+      "#core-worker-utils": ["./src/worker/core-worker-utils", "./src/worker/core-worker-utils.slim"]
     },
     "rootDir": "src",
-    "sourceMap": true,
     "types": ["../../node_modules/user-agent-data-types"]
   }
 }

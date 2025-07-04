@@ -1,0 +1,37 @@
+{
+  "name": "express-html",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "homepage": "https://github.com/prelude-so/web/tree/main/packages/demo-server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prelude-so/web.git",
+    "directory": "packages/demo-server"
+  },
+  "scripts": {
+    "dev": "tsc-watch --noClear -p ./tsconfig.json --onFirstSuccess \"npm run copy-files\" --onSuccess \"node --env-file .env.local ./dist/app.js\"",
+    "copy-files": "rm -rf ./dist/views && cp -R ./views ./dist/views && rm -rf ./dist/public && cp -R ./public ./dist/public && npm run copy-client-sdk",
+    "copy-client-sdk": "rm -f dist/public/{core,js-sdk}/*.* && cp -R ../../packages/core/dist ./dist/public/core && cp -R ../../packages/js-sdk/dist/inline ./dist/public/js-sdk",
+    "tailwind": "npx @tailwindcss/cli -i ./src/input.css -o ./public/stylesheets/style.css"
+  },
+  "dependencies": {
+    "@prelude.so/sdk": "^0.2.0",
+    "@tailwindcss/cli": "^4.0.17",
+    "debug": "~2.6.9",
+    "express": "^4.21.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "^3.0.3",
+    "tailwindcss": "^4.0.17"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "tsc-watch": "^6.2.1",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

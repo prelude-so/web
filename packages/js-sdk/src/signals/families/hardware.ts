@@ -39,7 +39,6 @@ export default class Hardware {
 
   private static getArchitectureFallback(): string | null {
     const ua = navigator.userAgent.toLowerCase();
-    console.log("User agent:", ua);
     if (ua.includes("arm") || ua.includes("aarch64")) {
       return "arm";
     } else if (ua.includes("x86_64") || ua.includes("x64") || ua.includes("wow64")) {

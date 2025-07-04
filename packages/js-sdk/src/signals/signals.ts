@@ -1,4 +1,4 @@
-import { getDispatchId } from "#core";
+import { core } from "../core";
 import Application from "./families/application";
 import Device from "./families/device";
 import Hardware from "./families/hardware";
@@ -27,7 +27,7 @@ export default class Signals {
     ]);
 
     const s = new Signals(
-      await getDispatchId(),
+      await core.getDispatchId(),
       await Application.collect(),
       await Device.collect(uaData),
       Hardware.collect(uaData),

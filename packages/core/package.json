@@ -1,10 +1,11 @@
 {
   "name": "@prelude.so/core",
-  "version": "0.1.3",
+  "version": "0.1.6",
   "private": false,
   "scripts": {
-    "build": "rimraf ./dist && webpack --config webpack.prod.cjs",
-    "build:debug": "rimraf ./dist && webpack --config webpack.dev.cjs"
+    "build:types": "tsc --project tsconfig.json",
+    "dev": "rimraf ./dist && node scripts/build.mjs --mode=dev && npm run build:types",
+    "build": "rimraf ./dist && node scripts/build.mjs --mode=prod && npm run build:types"
   },
   "keywords": [],
   "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
@@ -16,25 +17,22 @@
   },
   "license": "Apache-2.0",
   "description": "Prelude Web Core SDK",
-  "main": "./dist/main/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "default": "./dist/index.js",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "./slim": {
-      "default": "./dist/index.slim.js",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./slim/index_bg.wasm": "./dist/index_bg.wasm"
+    "./core.js": "./dist/core.js",
+    "./core.wasm": "./dist/core.wasm"
   },
   "devDependencies": {
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1",
-    "webpack-merge": "^6.0.1"
+    "esbuild": "^0.25.5",
+    "typescript": "^5.8.3"
   }
 }

@@ -1,11 +1,11 @@
 import { DEFAULT_FETCH_TIMEOUT_MS } from "../constants";
-import { generatePayload, getDefaultEndpoint } from "#core";
+import { core } from "../core";
 import { buildUserAgent } from "../user-agent";
 import Config from "./config";
 import Signals from "./signals";
 
 export async function dispatchSignals(sdkKey: string, url?: string): Promise<string> {
-  url = url ?? (await getDefaultEndpoint());
+  url = url ?? (await core.getDefaultEndpoint());
   const signals = await Signals.collect();
   const endpoint = url + "/v1/signals";
   const config = new Config(sdkKey, DEFAULT_FETCH_TIMEOUT_MS);
@@ -21,7 +21,7 @@ export async function dispatchSignals(sdkKey: string, url?: string): Promise<str
       "Content-Encoding": "deflate",
       "Content-Type": "application/vnd.prelude.signals",
     },
-    body: await generatePayload(signals),
+    body: (await core.generatePayload(signals)) as BodyInit,
     signal: AbortSignal.timeout(config.timeout),
   });
 

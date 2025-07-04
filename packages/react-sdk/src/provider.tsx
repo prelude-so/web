@@ -130,6 +130,21 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
     }
   }, [client]);
 
+  const invalidateCache = useCallback(async () => {
+    try {
+      await client.invalidateCache();
+    } catch (error) {
+      let e: Error;
+      if (error instanceof Error) {
+        e = error;
+      } else {
+        e = new Error("Invalidate cache error");
+      }
+      dispatch({ type: "ERROR", error: e });
+      throw e;
+    }
+  }, [client]);
+
   return (
     <PrldSessionContext.Provider
       value={{
@@ -139,6 +154,7 @@ export const PrldSessionProvider = ({ children, clientOptions }: PrldSessionProv
         retryOTP,
         refresh,
         logout,
+        invalidateCache,
       }}
     >
       {children}

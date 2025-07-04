@@ -1,0 +1,6 @@
+{
+  "arrowParens": "always",
+  "experimentalTernaries": true,
+  "printWidth": 110,
+  "trailingComma": "all"
+}

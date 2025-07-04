@@ -3,13 +3,12 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "pkg"],
   "compilerOptions": {
-    "declarationMap": true,
     "declarationDir": "dist/types",
     "downlevelIteration": true,
+    "emitDeclarationOnly": true,
     "lib": ["ES2023", "DOM"],
     "outDir": "dist",
     "rootDir": "src",
-    "sourceMap": true,
     "types": ["../../node_modules/user-agent-data-types"]
   }
 }

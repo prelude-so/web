@@ -12,6 +12,7 @@ export interface PrldSessionContextValue extends PrldSessionState {
   retryOTP: () => Promise<void>;
   refresh: () => Promise<PrldUser | undefined>;
   logout: () => Promise<void>;
+  invalidateCache: () => Promise<void>;
 }
 
 export const PrldSessionContext = createContext<PrldSessionContextValue>({
@@ -21,4 +22,5 @@ export const PrldSessionContext = createContext<PrldSessionContextValue>({
   retryOTP: stub,
   refresh: stub,
   logout: stub,
+  invalidateCache: stub,
 });
