@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/js-sdk",
-  "version": "0.2.7",
+  "version": "0.2.10",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
@@ -69,7 +69,7 @@
     "user-agent-data-types": "^0.4.2"
   },
   "dependencies": {
-    "@prelude.so/core": "^0.1.6",
+    "@prelude.so/core": "^0.1.8",
     "browser-tabs-lock": "^1.3.0"
   },
   "engines": {

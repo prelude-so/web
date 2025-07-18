@@ -2,50 +2,47 @@ export default class Platform {
   constructor(
     public connectionType: string | null = null,
     public cookiesEnabled: boolean | null = null,
-    public dnt: string | null = null,
+    public doNotTrack: string | null = null,
     public indexedDbEnabled: boolean | null = null,
     public localStorageEnabled: boolean | null = null,
     public maybeHeadless: boolean | null = null,
     public mediaCapabilities: string | null = null,
     public multiTouchDevice: boolean | null = null,
-    public plugins: string | null = null,
+    public pluginsDigest: string | null = null,
     public rtt: number | null = null,
     public userAgent: string | null = null,
-    public webglEnabled: boolean | null = null,
+    public webGlEnabled: boolean | null = null,
   ) {}
 
   static async collect(): Promise<Platform> {
     const p = new Platform();
-    const connection =
-      // @ts-ignore - Connection property may not be in navigator type definitions
-      navigator.connection ||
-      // @ts-ignore
-      navigator.mozConnection ||
-      // @ts-ignore
-      navigator.webkitConnection;
-
+    // @ts-ignore
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (connection) {
       p.connectionType = connection.type;
       p.rtt = connection.rtt;
     }
+
     p.cookiesEnabled = navigator.cookieEnabled;
-    p.dnt = navigator.doNotTrack;
+    p.doNotTrack = navigator.doNotTrack;
     p.indexedDbEnabled = await Platform.indexedDbEnabled();
     p.localStorageEnabled = Platform.localStorageEnabled();
     p.maybeHeadless = await Platform.maybeHeadless();
     p.mediaCapabilities = await Platform.getMediaCapabilities();
     p.multiTouchDevice = navigator.maxTouchPoints > 1;
+
     const plugins = Platform.getPlugins();
     if (plugins) {
-      p.plugins = await plugins.sha256();
+      p.pluginsDigest = await plugins.sha256();
     }
+
     p.userAgent = navigator.userAgent;
-    p.webglEnabled = !!Platform.getWGLContext();
+    p.webGlEnabled = !!Platform.getWebGLContext();
 
     return p;
   }
 
-  static getWGLContext(): RenderingContext | null {
+  static getWebGLContext(): RenderingContext | null {
     const gl = document.createElement("canvas");
     let c: RenderingContext | null = null;
 
@@ -64,7 +61,6 @@ export default class Platform {
 
   static getPlugins(): string | null {
     const rawPlugins: PluginArray = navigator.plugins;
-
     if (!rawPlugins) {
       return null;
     }
@@ -133,7 +129,6 @@ export default class Platform {
             },
       };
 
-      // @ts-ignore
       try {
         return {
           codec,

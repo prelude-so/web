@@ -5,7 +5,7 @@ import { SafeLock } from "./lock";
 import Signals from "./signals/signals";
 import type { MessageEventData } from "./worker/types";
 
-const workerTimeout = 1000;
+const workerTimeout = 10_000;
 
 type ResolvableValue = Uint8Array | string;
 
@@ -21,12 +21,12 @@ class Core {
   worker?: Worker;
   coreReady = false;
   resolvers: Map<string, Resolver | VoidResolver> = new Map<string, Resolver>();
+  rejectors: Map<string, (reason?: Error) => void> = new Map<string, (reason?: Error) => void>();
 
   constructor() {
     const isBrowserLike = typeof window !== "undefined";
-
     if (!isBrowserLike) {
-      throw new Error("@prelude.so/js-sdk must be used in a browser like environment");
+      throw new Error("@prelude.so/js-sdk must be used in a browser-like environment");
     }
 
     try {
@@ -44,38 +44,72 @@ class Core {
     if (this.worker) {
       this.worker.addEventListener("message", (e: MessageEvent<MessageEventData>) => {
         const promiseId = e.data.promiseId;
-        const resolver = this.resolvers.get(promiseId);
-        if (resolver) {
-          const result = e.data.result;
-          switch (e.data.type) {
-            case "generate_payload":
-              resolver(result as Uint8Array);
-              break;
-            case "get_default_endpoint":
-              resolver(result as string);
-              break;
-            case "get_dispatch_id":
-              resolver(result as string);
-              break;
-            case "get_version":
-              resolver(result as string);
-              break;
-            case "init":
-              this.coreReady = true;
-              (resolver as VoidResolver)();
-              break;
-            default:
-              throw Error("Unkown worker message type");
+        if (e.data.error) {
+          const rejector = this.rejectors.get(promiseId);
+          if (rejector) {
+            switch (e.data.type) {
+              case "generate_payload":
+                rejector(new Error("Error while executing generate_payload in worker"));
+                break;
+              case "get_default_endpoint":
+                rejector(new Error("Error while executing get_default_endpoint in worker"));
+                break;
+              case "get_dispatch_id":
+                rejector(new Error("Error while executing get_dispatch_id in worker"));
+                break;
+              case "get_version":
+                rejector(new Error("Error while executing get_version in worker"));
+                break;
+              case "init":
+                this.coreReady = false;
+                rejector(new Error("Error while executing init in worker"));
+                break;
+              default:
+                this.rejectors.delete(promiseId);
+                this.resolvers.delete(promiseId);
+                throw Error("Unkown worker message type");
+            }
+            this.rejectors.delete(promiseId);
+            this.resolvers.delete(promiseId);
           }
-          this.resolvers.delete(promiseId);
+        } else {
+          const resolver = this.resolvers.get(promiseId);
+          if (resolver) {
+            const result = e.data.result;
+            switch (e.data.type) {
+              case "generate_payload":
+                resolver(result as Uint8Array);
+                break;
+              case "get_default_endpoint":
+                resolver(result as string);
+                break;
+              case "get_dispatch_id":
+                resolver(result as string);
+                break;
+              case "get_version":
+                resolver(result as string);
+                break;
+              case "init":
+                this.coreReady = true;
+                (resolver as VoidResolver)();
+                break;
+              default:
+                this.resolvers.delete(promiseId);
+                this.rejectors.delete(promiseId);
+                throw Error("Unkown worker message type");
+            }
+            this.resolvers.delete(promiseId);
+            this.rejectors.delete(promiseId);
+          }
         }
       });
     }
   }
 
   _workerPromiseWithTimeout(promiseId: string): Promise<ResolvableValue> {
-    const workerPromise = new Promise<ResolvableValue>((resolve) => {
+    const workerPromise = new Promise<ResolvableValue>((resolve, reject) => {
       this.resolvers.set(promiseId, resolve);
+      this.rejectors.set(promiseId, reject);
     });
 
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -84,6 +118,7 @@ class Core {
       new Promise<ResolvableValue>((_, reject) => {
         timeoutId = setTimeout(() => {
           this.resolvers.delete(promiseId);
+          this.rejectors.delete(promiseId);
           reject(new Error("Timeout when awaiting worker"));
         }, workerTimeout);
       }),
@@ -97,10 +132,9 @@ class Core {
 
   async loadCore(): Promise<void> {
     const isBrowserLike = typeof window !== "undefined";
-
     if (!isBrowserLike) {
       this.coreReady = false;
-      throw new Error("@prelude.so/js-sdk must be used in a browser like environment");
+      throw new Error("@prelude.so/js-sdk must be used in a browser-like environment");
     }
 
     let compileError: null | Error = null;
@@ -112,8 +146,9 @@ class Core {
 
       if (this.worker) {
         const promiseId = generatePromiseId();
-        const workerPromise = new Promise<void>((resolve) => {
+        const workerPromise = new Promise<void>((resolve, reject) => {
           this.resolvers.set(promiseId, resolve);
+          this.rejectors.set(promiseId, reject);
         });
 
         let timeoutId: ReturnType<typeof setTimeout>;
@@ -122,6 +157,7 @@ class Core {
           new Promise<void>((_, reject) => {
             timeoutId = setTimeout(() => {
               this.resolvers.delete(promiseId);
+              this.rejectors.delete(promiseId);
               this.coreReady = false;
               compileError = new Error("Timeout when awaiting worker");
               reject(compileError);

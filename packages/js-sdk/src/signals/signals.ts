@@ -6,7 +6,7 @@ import Network from "./families/network";
 
 export default class Signals {
   constructor(
-    public dispatchId: string,
+    public id: string,
     public application: Application,
     public device: Device,
     public hardware: Hardware,
@@ -14,8 +14,7 @@ export default class Signals {
   ) {}
 
   static async collect(): Promise<Signals> {
-    const n = window.navigator;
-    const uaData = await n.userAgentData?.getHighEntropyValues([
+    const uaData = await window.navigator.userAgentData?.getHighEntropyValues([
       "architecture",
       "bitness",
       "formFactor",
@@ -26,13 +25,12 @@ export default class Signals {
       "wow64",
     ]);
 
-    const s = new Signals(
+    return new Signals(
       await core.getDispatchId(),
       await Application.collect(),
       await Device.collect(uaData),
       Hardware.collect(uaData),
       Network.collect(),
     );
-    return s;
   }
 }

@@ -21,3 +21,11 @@ export class ForbiddenError extends Error {
     Object.setPrototypeOf(this, ForbiddenError.prototype);
   }
 }
+
+export const normalizeError = (message: string, e: unknown): Error => {
+  if (e instanceof Error) {
+    return e;
+  } else {
+    return new Error(message);
+  }
+};

@@ -3,7 +3,7 @@ import "../../utils";
 export default class Device {
   constructor(
     public fontsDigest: string | null = null,
-    public hostName: string | null = null,
+    public hostname: string | null = null,
     public localeCurrent: string | null = null,
     public localePreferred: string[] | null = null,
     public osRelease: string | null = null,
@@ -11,7 +11,7 @@ export default class Device {
     public platform: string | null = null,
     public systemName: string | null = null,
     public systemVersion: string | null = null,
-    public tzCurrent: string | null = null,
+    public timeZoneCurrent: string | null = null,
   ) {}
 
   static async collect(uaData?: UADataValues): Promise<Device> {
@@ -19,7 +19,7 @@ export default class Device {
     const n = window.navigator;
 
     d.fontsDigest = await getSystemFonts().sha256();
-    d.hostName = window.location.origin;
+    d.hostname = window.location.origin;
     d.localeCurrent = n.language;
     d.localePreferred = n.languages.slice();
     d.osRelease = uaData?.platformVersion ?? null;
@@ -27,7 +27,7 @@ export default class Device {
     d.platform = "web";
     d.systemName = (uaData?.fullVersionList || [])[0]?.brand ?? null;
     d.systemVersion = (uaData?.fullVersionList || [])[0]?.version ?? null;
-    d.tzCurrent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    d.timeZoneCurrent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     return d;
   }
@@ -92,15 +92,15 @@ const SYSTEM_FONTS = ["caption", "icon", "menu", "message-box", "small-caption",
 const GeckoFonts: Record<string, string> = {
   "-apple-system": Devices.MACOS,
   "Segoe UI": Devices.WINDOWS,
-  Tahoma: Devices.WINDOWS,
+  "Tahoma": Devices.WINDOWS,
   "Yu Gothic UI": Devices.WINDOWS,
   "Microsoft JhengHei UI": Devices.WINDOWS,
   "Microsoft YaHei UI": Devices.WINDOWS,
   "Meiryo UI": Devices.WINDOWS,
-  Cantarell: Devices.LINUX,
-  Ubuntu: Devices.LINUX,
-  Sans: Devices.LINUX,
+  "Cantarell": Devices.LINUX,
+  "Ubuntu": Devices.LINUX,
+  "Sans": Devices.LINUX,
   "sans-serif": Devices.LINUX,
   "Fira Sans": Devices.LINUX,
-  Roboto: Devices.ANDROID,
+  "Roboto": Devices.ANDROID,
 };

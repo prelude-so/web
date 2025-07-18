@@ -1,8 +1,9 @@
 import Signals from "../signals/signals";
 
-interface IMessageEventData {
+export interface IMessageEventData {
   promiseId: string;
   type: "init" | "generate_payload" | "get_default_endpoint" | "get_dispatch_id" | "get_version";
+  error?: Error;
 }
 
 interface GeneratePayloadData extends IMessageEventData {

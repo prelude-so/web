@@ -12,6 +12,7 @@ export interface PrldUser {
 
 export interface StartOTPLoginEndpointOptions {
   identifier: PrldIdentifier;
+  login_config_id?: string;
 }
 
 export interface ErrorResponse {

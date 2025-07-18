@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/core",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "private": false,
   "scripts": {
     "build:types": "tsc --project tsconfig.json",

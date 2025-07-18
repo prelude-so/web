@@ -4,14 +4,8 @@ export default class Network {
   static collect(): Network {
     const network = new Network();
 
-    const connection =
-      // @ts-ignore
-      navigator.connection ||
-      // @ts-ignore
-      navigator.mozConnection ||
-      // @ts-ignore
-      navigator.webkitConnection;
-
+    // @ts-ignore
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (connection) {
       network.cellularData = "cellular" === connection.type;
     }
