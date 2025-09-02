@@ -19,6 +19,7 @@ export default tseslint.config([
     },
     rules: {
       "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/prefer-literal-enum-member": ["error", { allowBitwiseExpressions: true }],
       "prettier/prettier": "error",
     },
   },

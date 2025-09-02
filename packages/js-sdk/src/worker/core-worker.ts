@@ -5,7 +5,7 @@ import { normalizeError } from "../errors";
 
 const handleError = (e: unknown, message: string, eventProps: IMessageEventData) => {
   const err = normalizeError(message, e);
-  console.error(`${message}:`, err.message);
+  console.error(`@prelude.so/js-sdk ${message}:`, err.message);
   self.postMessage({
     ...eventProps,
     error: err,
@@ -79,19 +79,5 @@ if (typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScop
       default:
         throw Error("Worker: unkown message type");
     }
-  };
-
-  self.onerror = (e: string | Event | ErrorEvent): boolean => {
-    if (e !== null && typeof e === "object" && "error" in e) {
-      if (e.error instanceof Error) {
-        console.error("Core worker catched an error:", e.error.message);
-      } else {
-        console.error("Core worker catched an error:", e.error);
-      }
-    } else {
-      console.error("Core worker catched an error");
-    }
-
-    return true;
   };
 }

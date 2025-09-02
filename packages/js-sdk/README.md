@@ -58,7 +58,7 @@ Here's an example config with comments to explain the configuration:
 {
   // If you're using a `/slim` entrypoint,
   // then you'll have to copy the `.wasm` core as a static asset in your bundle.
-  assetsInclude: ["**/node_modules/@prelude.so/**/*.wasm"],
+  assetsInclude: ["./node_modules/@prelude.so/**/*.wasm"],
   // Vite dev server config
   optimizeDeps: {
     // @prelude.so/js-sdk uses a web worker. Vite dev server does not handle optimization of web worker files.

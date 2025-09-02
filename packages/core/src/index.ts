@@ -1,5 +1,4 @@
-import {
-  initSync,
+import init, {
   generate_payload,
   get_default_endpoint,
   get_dispatch_id,
@@ -11,5 +10,5 @@ export {
   get_default_endpoint,
   get_dispatch_id,
   get_version,
-  initSync,
+  init,
 };

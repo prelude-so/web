@@ -37,8 +37,31 @@ class Core {
         // Browser / bundler not compatible with module worker, e.g. webpack
         this.worker = new Worker(new URL("./core-worker.js", import.meta.url));
       }
+      this.worker.onerror = (e: ErrorEvent | unknown) => {
+        let err: Error | null = new Error("Unknown core worker error");
+
+        if (e !== null && typeof e === "object" && "error" in e) {
+          if (e.error instanceof Error) {
+            err = e.error;
+            console.error("@prelude.so/js-sdk core worker error:", e.error.message);
+          } else {
+            err.cause = e.error;
+            console.error("@prelude.so/js-sdk core worker error:", e.error);
+          }
+        } else {
+          // Unknown error, here we unset the worker to use fallback
+          this.worker = undefined;
+          console.error("@prelude.so/js-sdk core worker unknown error, using fallback");
+        }
+        for (const [promiseId, rejector] of this.rejectors) {
+          rejector(err);
+          this.rejectors.delete(promiseId);
+          this.resolvers.delete(promiseId);
+        }
+      };
     } catch {
       // Browser / bundler not compatible worker, falling back on main thread
+      console.error("@prelude.so/js-sdk core worker could not be instantiated, using fallback");
     }
 
     if (this.worker) {
@@ -159,7 +182,7 @@ class Core {
               this.resolvers.delete(promiseId);
               this.rejectors.delete(promiseId);
               this.coreReady = false;
-              compileError = new Error("Timeout when awaiting worker");
+              compileError = new Error("Timeout when initiating core worker");
               reject(compileError);
             }, workerTimeout);
           }),

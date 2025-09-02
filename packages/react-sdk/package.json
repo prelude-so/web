@@ -1,6 +1,6 @@
 {
   "name": "@prelude.so/react-sdk",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "private": false,
   "scripts": {
     "prebuild": "node ./scripts/check-version.cjs",
@@ -36,7 +36,7 @@
     "dist"
   ],
   "dependencies": {
-    "@prelude.so/js-sdk": "^0.2.10"
+    "@prelude.so/js-sdk": "^0.2.12"
   },
   "peerDependencies": {
     "react": "^16.11.0 || ^17 || ^18 || ^19",
