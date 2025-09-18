@@ -1,0 +1,42 @@
+{
+  "name": "@prelude.so/react-components",
+  "private": true,
+  "keywords": [],
+  "author": "Prelude <hello@prelude.so> (https://github.com/prelude-so)",
+  "homepage": "https://github.com/prelude-so/web/tree/main/packages/react-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prelude-so/web.git",
+    "directory": "packages/react-components"
+  },
+  "license": "Apache-2.0",
+  "description": "Prelude Playground React Components",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": "22.x"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.43.0"
+  },
+  "peerDependencies": {
+    "@prelude.so/js-sdk": ">=0.2.7",
+    "react": "^16.11.0 || ^17 || ^18 || ^19",
+    "react-dom": "^16.11.0 || ^17 || ^18 || ^19"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json"
+  }
+}

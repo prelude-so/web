@@ -32,7 +32,7 @@ export interface CacheEntry {
 }
 
 export interface WrappedCacheEntry {
-  body: Partial<CacheEntry>;
+  body: CacheEntry;
   expiresAt: number;
 }
 

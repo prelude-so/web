@@ -23,6 +23,12 @@ module.exports = function (env, { mode }) {
           include: [path.resolve(__dirname, "node_modules/@prelude.so/core")],
           type: "asset/resource",
         },
+        {
+          test: /\.m?js/, // Apply to .mjs or .js files as needed
+          resolve: {
+            fullySpecified: false, // Set to false to allow omitting extensions
+          },
+        },
       ],
     },
     resolve: {

@@ -26,7 +26,8 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
-    "@prelude.so/js-sdk": "^0.2.10",
+    "@prelude.so/js-sdk": "^0.2.13",
+    "@prelude.so/react-components": "file:../react-components",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }

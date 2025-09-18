@@ -4,7 +4,8 @@
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declaration": false,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",

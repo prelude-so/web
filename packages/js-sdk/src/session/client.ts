@@ -11,7 +11,13 @@ import { LocalStorageCache } from "./cache/cache-localstorage";
 import { CacheManager } from "./cache/cache-manager";
 import { CacheKeyManifest } from "./cache/key-manifest";
 import { CacheKey } from "./cache/shared";
-import { APIResponse, PrldUser, RefreshTokenEndpointResponse, StartOTPLoginEndpointOptions } from "./global";
+import {
+  APIResponse,
+  PrldProfile,
+  PrldUser,
+  RefreshTokenEndpointResponse,
+  StartOTPLoginEndpointOptions,
+} from "./global";
 import { decode } from "./jwt";
 
 export interface PrldSessionClientOptions {
@@ -100,17 +106,52 @@ export class PrldSessionClient {
     return data;
   }
 
+  public async getProfile(): Promise<PrldProfile | undefined> {
+    const entry = await this.cacheManager.getWithoutExpirationCheck(
+      new CacheKey({
+        appId: this.domain,
+      }),
+    );
+
+    if (entry) {
+      const decodedToken = decode(entry.access_token);
+
+      return decodedToken.claims.cc;
+    }
+
+    return;
+  }
+
   public async refresh(): Promise<{ user: PrldUser }> {
     let refreshError: null | Error = null;
 
+    // Check cache to avoid waiting for lock, e.g. in case of slow network
+    const entry = await this.cacheManager.get(
+      new CacheKey({
+        appId: this.domain,
+      }),
+    );
+
+    if (entry) {
+      const decodedToken = decode(entry.access_token);
+
+      return {
+        user: {
+          accessToken: entry.access_token,
+          profile: decodedToken.claims.cc,
+        },
+      };
+    }
+
     const data = await this.refreshLock.acquireLockAndRun<RefreshTokenEndpointResponse>(async () => {
+      // Check cache again in case it's just been populated by a previous call
       const entry = await this.cacheManager.get(
         new CacheKey({
           appId: this.domain,
         }),
       );
 
-      if (entry?.access_token && entry.expires_at) {
+      if (entry) {
         return {
           access_token: entry.access_token,
           expires_at: entry.expires_at,
@@ -152,11 +193,16 @@ export class PrldSessionClient {
       return data;
     });
 
+    if (data === undefined) {
+      // Lock was not acquired
+      throw new Error("Timeout error");
+    }
+
     if (refreshError) {
       throw refreshError;
     }
 
-    if (!data?.access_token) {
+    if (!data.access_token) {
       throw new Error("No access token");
     }
 

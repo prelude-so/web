@@ -9,7 +9,7 @@ export function SafeLock(key: string) {
     lock = new Lock();
   }
 
-  window.addEventListener("beforeunload", async () => {
+  window.addEventListener("pagehide", async () => {
     await lock.releaseLock(key);
   });
 
@@ -25,7 +25,7 @@ export function SafeLock(key: string) {
         })
         .catch(() => {
           // browser-tabs-lock never seems to throw, so we are mirroring the behavior here
-          return false;
+          return;
         });
     }
 

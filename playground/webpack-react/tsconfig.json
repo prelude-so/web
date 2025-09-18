@@ -1,14 +1,22 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@tsconfig/recommended",
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
-    "declarationMap": true,
-    "declarationDir": "dist/types",
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "lib": ["ES2023", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noImplicitAny": true,
     "outDir": "dist",
     "rootDir": "src",
-    "sourceMap": true
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES5"
   }
 }

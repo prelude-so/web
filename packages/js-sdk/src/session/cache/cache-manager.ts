@@ -14,7 +14,7 @@ export class CacheManager {
     this.nowProvider = nowProvider ?? DEFAULT_NOW_PROVIDER;
   }
 
-  async get(cacheKey: CacheKey): Promise<Partial<CacheEntry> | undefined> {
+  async get(cacheKey: CacheKey): Promise<CacheEntry | undefined> {
     let wrappedEntry = await this.cache.get<WrappedCacheEntry>(cacheKey.toKey());
 
     if (!wrappedEntry) {
@@ -38,18 +38,32 @@ export class CacheManager {
     const nowSeconds = Math.floor(now / 1000);
 
     if (wrappedEntry.expiresAt < nowSeconds) {
-      if (wrappedEntry.body.access_token) {
-        wrappedEntry.body = {
-          access_token: wrappedEntry.body.access_token,
-        };
-
-        await this.cache.set(cacheKey.toKey(), wrappedEntry);
-        return wrappedEntry.body;
-      }
-
       await this.cache.remove(cacheKey.toKey());
       await this.keyManifest?.remove(cacheKey.toKey());
 
+      return;
+    }
+
+    return wrappedEntry.body;
+  }
+
+  async getWithoutExpirationCheck(cacheKey: CacheKey): Promise<CacheEntry | undefined> {
+    let wrappedEntry = await this.cache.get<WrappedCacheEntry>(cacheKey.toKey());
+
+    if (!wrappedEntry) {
+      const keys = await this.getCacheKeys();
+
+      if (!keys) return;
+
+      const matchedKey = this.matchExistingCacheKey(cacheKey, keys);
+
+      if (matchedKey) {
+        wrappedEntry = await this.cache.get<WrappedCacheEntry>(matchedKey);
+      }
+    }
+
+    // If we still don't have an entry, exit.
+    if (!wrappedEntry) {
       return;
     }
 

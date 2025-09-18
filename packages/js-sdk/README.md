@@ -151,5 +151,5 @@ const client = new PrldSessionClient({
 ```javascript
 import { dispatchSignals } from "@prelude.so/js-sdk/signals";
 
-await const dispatchId = dispatchSignals(<your-prelude-sdk-key>);
+const dispatchId = await dispatchSignals(<your-prelude-sdk-key>);
 ```
